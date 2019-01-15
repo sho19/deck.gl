@@ -33,7 +33,7 @@ function getLayerSnapshot(layer) {
     let parentProps = props;
 
     while (parentLayer) {
-      ids.push(parentLayer.id);
+      ids.push(getSublayerId(parentLayer));
       parentLayer = parentLayer.parent;
     }
     while (ids.length) {
@@ -41,10 +41,10 @@ function getLayerSnapshot(layer) {
     }
 
     if (l.isComposite) {
-      parentProps[l.id] = getCompositeLayerSnapshot(l).props;
+      parentProps[getSublayerId(l)] = getCompositeLayerSnapshot(l).props;
     } else {
       const snapshot = getPrimitiveLayerSnapshot(l);
-      parentProps[l.id] = snapshot.props;
+      parentProps[getSublayerId(l)] = snapshot.props;
       transferList = transferList.concat(snapshot.transferList);
     }
   });
@@ -57,6 +57,15 @@ function getLayerSnapshot(layer) {
   return {props: props[layer.id], transferList};
 }
 
+function getSublayerId(layer) {
+  const id = layer.id;
+  if (layer.parent) {
+    const parentId = layer.parent && layer.parent.id;
+    return id.slice(parentId.length + 1);
+  }
+  return id;
+}
+
 function getCompositeLayerSnapshot(layer) {
   return {
     props: {
@@ -66,6 +75,28 @@ function getCompositeLayerSnapshot(layer) {
     }
   };
 }
+
+// Props used for attribute generation, can be safely discarded
+const propBlackList = new Set(['data', 'updateTriggers']);
+
+// Props inherited from parent
+const sublayerPropBlackList = new Set([
+  'fp64',
+  'lightSettings',
+  'transitions',
+  'opacity',
+  'pickable',
+  'visible',
+  'parameters',
+  'getPolygonOffset',
+  'highlightedObjectIndex',
+  'autoHighlight',
+  'highlightColor',
+  'coordinateSystem',
+  'coordinateOrigin',
+  'wrapLongitude',
+  'modelMatrix'
+]);
 
 function getPrimitiveLayerSnapshot(layer) {
   // Extract generated attributes - should move to AttributeManager?
@@ -86,9 +117,8 @@ function getPrimitiveLayerSnapshot(layer) {
   for (const propName in layer.props) {
     if (
       Object.hasOwnProperty.call(layer.props, propName) &&
-      propName !== 'type' &&
-      propName !== 'data' &&
-      propName !== 'updateTriggers' &&
+      !propBlackList.has(propName) &&
+      (!layer.parent || !sublayerPropBlackList.has(propName)) &&
       typeof layer.props[propName] !== 'function'
     ) {
       props[propName] = layer.props[propName];

@@ -86,10 +86,8 @@ export default class CompositeLayer extends Layer {
     };
 
     if (sublayerProps) {
-      const id = `${this.props.id}-${sublayerProps.id}`;
-
-      Object.assign(newProps, sublayerProps, userProps && userProps[id], {
-        id,
+      Object.assign(newProps, sublayerProps, userProps && userProps[sublayerProps.id], {
+        id: `${this.props.id}-${sublayerProps.id}`,
         updateTriggers: Object.assign(
           {
             all: this.props.updateTriggers.all

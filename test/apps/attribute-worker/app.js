@@ -46,7 +46,6 @@ function onDataLoaded(evt) {
   deck.setProps({
     layers: [
       new LayerType(layerData, {
-        id: layerData.type,
         pickable: true,
         onClick: console.log // eslint-disable-line
       })
