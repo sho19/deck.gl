@@ -176,6 +176,10 @@ export default class HexagonCellLayer extends Layer {
   }
 
   _getModel(gl) {
+    if (!gl) {
+      return null;
+    }
+
     return new Model(
       gl,
       Object.assign({}, this.getShaders(), {

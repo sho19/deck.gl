@@ -164,6 +164,10 @@ export default class PathLayer extends Layer {
   }
 
   _getModel(gl) {
+    if (!gl) {
+      return null;
+    }
+
     /*
      *       _
      *        "-_ 1                   3                       5

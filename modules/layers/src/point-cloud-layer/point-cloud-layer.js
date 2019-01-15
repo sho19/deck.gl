@@ -98,6 +98,10 @@ export default class PointCloudLayer extends Layer {
   }
 
   _getModel(gl) {
+    if (!gl) {
+      return null;
+    }
+
     // a triangle that minimally cover the unit circle
     const positions = [];
     for (let i = 0; i < 3; i++) {

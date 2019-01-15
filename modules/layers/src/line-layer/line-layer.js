@@ -105,6 +105,10 @@ export default class LineLayer extends Layer {
   }
 
   _getModel(gl) {
+    if (!gl) {
+      return null;
+    }
+
     /*
      *  (0, -1)-------------_(1, -1)
      *       |          _,-"  |

@@ -117,6 +117,10 @@ export default class ArcLayer extends Layer {
   }
 
   _getModel(gl) {
+    if (!gl) {
+      return null;
+    }
+
     let positions = [];
     const NUM_SEGMENTS = 50;
     /*

@@ -200,7 +200,9 @@ export default class SolidPolygonLayer extends Layer {
   updateAttributes(props) {
     super.updateAttributes(props);
     const attributes = this.getAttributeManager().getChangedAttributes({clearChangedFlags: true});
-    const {topModel, sideModel, vertexCount, numInstances} = this.state;
+    const {topModel, sideModel} = this.state;
+    const vertexCount = props.vertexCount || this.state.vertexCount;
+    const numInstances = props.numInstances || this.state.numInstances;
 
     if (topModel) {
       topModel.setVertexCount(vertexCount);
@@ -240,6 +242,10 @@ export default class SolidPolygonLayer extends Layer {
   }
 
   _getModels(gl) {
+    if (!gl) {
+      return null;
+    }
+
     const {id, filled, extruded} = this.props;
 
     let topModel;
