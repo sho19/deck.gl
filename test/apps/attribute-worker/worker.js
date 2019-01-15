@@ -56,6 +56,7 @@ function getPrimitiveLayerSnapshot(layer) {
       Object.hasOwnProperty.call(layer.props, propName) &&
       propName !== 'type' &&
       propName !== 'data' &&
+      propName !== 'updateTriggers' &&
       typeof layer.props[propName] !== 'function'
     ) {
       props[propName] = layer.props[propName];
