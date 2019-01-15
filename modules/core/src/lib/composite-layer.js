@@ -67,7 +67,8 @@ export default class CompositeLayer extends Layer {
       coordinateSystem,
       coordinateOrigin,
       wrapLongitude,
-      modelMatrix
+      modelMatrix,
+      sublayerProps: userProps
     } = this.props;
     const newProps = {
       opacity,
@@ -85,8 +86,10 @@ export default class CompositeLayer extends Layer {
     };
 
     if (sublayerProps) {
-      Object.assign(newProps, sublayerProps, {
-        id: `${this.props.id}-${sublayerProps.id}`,
+      const id = `${this.props.id}-${sublayerProps.id}`;
+
+      Object.assign(newProps, sublayerProps, userProps && userProps[id], {
+        id,
         updateTriggers: Object.assign(
           {
             all: this.props.updateTriggers.all

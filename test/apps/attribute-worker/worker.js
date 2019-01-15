@@ -8,7 +8,7 @@ export default self => {
     const testCase = TEST_CASES[evt.data.id];
 
     fetchJSON(testCase.data).then(data => {
-      const LayerType = Layers[testCase.type] || Layers[`_${testCase.type}`];
+      const LayerType = Layers[testCase.type];
       const {props, transferList} = getLayerSnapshot(new LayerType({...testCase, data}));
       self.postMessage(props, transferList);
     });
@@ -24,15 +24,47 @@ function getLayerSnapshot(layer) {
   layerManager.setProps({layers: [layer]});
   layerManager.updateLayers();
 
-  // TODO - support composite layers
-  const {props, transferList} = getPrimitiveLayerSnapshot(layer);
+  const props = {};
+  let transferList = [];
+
+  layerManager.layers.forEach(l => {
+    const ids = [];
+    let parentLayer = l.parent;
+    let parentProps = props;
+
+    while (parentLayer) {
+      ids.push(parentLayer.id);
+      parentLayer = parentLayer.parent;
+    }
+    while (ids.length) {
+      parentProps = parentProps[ids.pop()].sublayerProps;
+    }
+
+    if (l.isComposite) {
+      parentProps[l.id] = getCompositeLayerSnapshot(l).props;
+    } else {
+      const snapshot = getPrimitiveLayerSnapshot(l);
+      parentProps[l.id] = snapshot.props;
+      transferList = transferList.concat(snapshot.transferList);
+    }
+  });
 
   // Release resources
   layerManager.setProps({layers: []});
   layerManager.updateLayers();
   layerManager.finalize();
 
-  return {props, transferList};
+  return {props: props[layer.id], transferList};
+}
+
+function getCompositeLayerSnapshot(layer) {
+  return {
+    props: {
+      id: layer.id,
+      type: layer.constructor.name,
+      sublayerProps: {}
+    }
+  };
 }
 
 function getPrimitiveLayerSnapshot(layer) {

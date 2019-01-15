@@ -16,7 +16,7 @@ export default {
     getWidth: 50
   },
   'SF Zipcodes': {
-    type: 'SolidPolygonLayer',
+    type: 'PolygonLayer',
     data:
       'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/website/sf-zipcodes.json',
     getPolygon: d => d.contour,
