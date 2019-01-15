@@ -20,7 +20,7 @@
 
 import {Layer} from '@deck.gl/core';
 import GL from '@luma.gl/constants';
-import {Model, Geometry, hasFeature, FEATURES} from 'luma.gl';
+import {Model, Geometry} from 'luma.gl';
 
 // Polygon geometry generation is managed by the polygon tesselator
 import PolygonTesselator from './polygon-tesselator';
@@ -66,12 +66,9 @@ export default class SolidPolygonLayer extends Layer {
   }
 
   initializeState() {
-    const {gl} = this.context;
     this.setState({
       numInstances: 0,
-      polygonTesselator: new PolygonTesselator({
-        IndexType: hasFeature(gl, FEATURES.ELEMENT_INDEX_UINT32) ? Uint32Array : Uint16Array
-      })
+      polygonTesselator: new PolygonTesselator({})
     });
 
     const attributeManager = this.getAttributeManager();

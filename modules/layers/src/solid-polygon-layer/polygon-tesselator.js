@@ -32,7 +32,7 @@ const {fp64LowPart} = fp64Module;
 // This class is set up to allow querying one attribute at a time
 // the way the AttributeManager expects it
 export default class PolygonTesselator extends Tesselator {
-  constructor({data, getGeometry, fp64, IndexType = Uint32Array}) {
+  constructor({data, getGeometry, fp64}) {
     super({
       data,
       getGeometry,
@@ -41,7 +41,7 @@ export default class PolygonTesselator extends Tesselator {
         positions: {size: 3},
         positions64xyLow: {size: 2, fp64Only: true},
         vertexValid: {type: Uint8ClampedArray, size: 1},
-        indices: {type: IndexType, size: 1}
+        indices: {type: Uint32Array, size: 1}
       }
     });
   }
