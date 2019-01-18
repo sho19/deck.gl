@@ -135,7 +135,7 @@ export default class GeoJsonLayer extends CompositeLayer {
 
     // Rendering props underlying layer
     const {
-      sublayerProps,
+      subLayerProps,
       lineWidthScale,
       lineWidthMinPixels,
       lineWidthMaxPixels,
@@ -160,11 +160,11 @@ export default class GeoJsonLayer extends CompositeLayer {
       updateTriggers
     } = this.props;
 
-    const drawPoints = (pointFeatures && pointFeatures.length > 0) || sublayerProps;
-    const drawLines = (lineFeatures && lineFeatures.length > 0) || sublayerProps;
+    const drawPoints = (pointFeatures && pointFeatures.length > 0) || subLayerProps;
+    const drawLines = (lineFeatures && lineFeatures.length > 0) || subLayerProps;
     const hasPolygonLines =
-      (polygonOutlineFeatures && polygonOutlineFeatures.length > 0) || sublayerProps;
-    const hasPolygon = (polygonFeatures && polygonFeatures.length > 0) || sublayerProps;
+      (polygonOutlineFeatures && polygonOutlineFeatures.length > 0) || subLayerProps;
+    const hasPolygon = (polygonFeatures && polygonFeatures.length > 0) || subLayerProps;
 
     // Filled Polygon Layer
     const polygonFillLayer =

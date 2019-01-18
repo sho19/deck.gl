@@ -37,7 +37,7 @@ function getLayerSnapshot(layer) {
       parentLayer = parentLayer.parent;
     }
     while (ids.length) {
-      parentProps = parentProps[ids.pop()].sublayerProps;
+      parentProps = parentProps[ids.pop()].subLayerProps;
     }
 
     if (l.isComposite) {
@@ -71,7 +71,7 @@ function getCompositeLayerSnapshot(layer) {
     props: {
       id: layer.id,
       type: layer.constructor.name,
-      sublayerProps: {}
+      subLayerProps: {}
     }
   };
 }

@@ -68,7 +68,7 @@ export default class CompositeLayer extends Layer {
       coordinateOrigin,
       wrapLongitude,
       modelMatrix,
-      sublayerProps: userProps
+      subLayerProps: userProps
     } = this.props;
     const newProps = {
       opacity,
